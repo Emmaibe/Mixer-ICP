@@ -1,29 +1,36 @@
 import { useState } from 'react';
 import { mix_swap_backend } from 'declarations/mix_swap_backend';
+import {NavContext} from "./context/navContext.js";
+import {ChainContextProvider} from "./context/ChainContext.jsx";
+import {Dashboard} from "./pages/Dashboard.jsx";
 
 function App() {
-  const [greeting, setGreeting] = useState('');
+  // const [greeting, setGreeting] = useState('');
+  //
+  // function handleSubmit(event) {
+  //   event.preventDefault();
+  //   const name = event.target.elements.name.value;
+  //   mix_swap_backend.greet(name).then((greeting) => {
+  //     setGreeting(greeting);
+  //   });
+  //   return false;
+  // }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const name = event.target.elements.name.value;
-    mix_swap_backend.greet(name).then((greeting) => {
-      setGreeting(greeting);
-    });
-    return false;
-  }
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const handleIsMenuOpen = () => {
+        setIsMenuOpen(!isMenuOpen)
+    }
 
   return (
     <main>
-      <img src="/logo2.svg" alt="DFINITY logo" />
-      <br />
-      <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
-      <section id="greeting">{greeting}</section>
+        <ChainContextProvider>
+            <NavContext.Provider value={{ isMenuOpen, handleIsMenuOpen }}>
+                <div className="montserrat">
+                    <Dashboard/>
+                </div>
+            </NavContext.Provider>
+        </ChainContextProvider>
     </main>
   );
 }
