@@ -22,11 +22,12 @@ export const DepositCard = () => {
         name: `${token?.name}`,
         currency: `${token?.currency}`,
         address: '',
-        amount: tokenAmount,
+        amount: '',
     })
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+        console.log(formData);
     }
 
     const handleSetTokenAmount = (amount) => {
@@ -51,7 +52,17 @@ export const DepositCard = () => {
         fetchData();
     }, [transactions]);
 
-    function createTransaction(){
+    function createTransaction(e){
+        e.preventDefault()
+
+        const data = {
+            chain: `${chain.name}`,
+            name: `${token.name}`,
+            currency: `${token.currency}`
+        }
+
+        console.log(data)
+
         if (
             !formData.name || !formData.amount ||
             !formData.chain || !formData.currency ||
@@ -59,13 +70,15 @@ export const DepositCard = () => {
         ) return alert("Please fill all required transaction fields");
 
         let newTransaction = {
-            chain: formData.chain,
-            name: formData.name,
-            currency: formData.currency,
+            chain: data.chain,
+            name: data.name,
+            currency: data.currency,
             address: formData.address,
-            amount: formData.amount,
+            amount: `${formData.amount}`,
             time: now.toString()
         }
+
+        console.log(newTransaction);
 
         setTransactions(prevTransactions => {
             mix_swap_backend.createTransaction(
@@ -98,7 +111,10 @@ export const DepositCard = () => {
 
                     { token?.denominations.map(
                         (amount, index) => (
-                            <div onClick={() => handleSetTokenAmount(amount)} key={index} className={`${tokenAmount === amount ? 'text-black bg-[#B5B6BB] border-white' : 'bg-[#46474E] border-[#B2B2B2]'} max-sm:text-[12px] p-2 bg-[#46474E] border border-[#B2B2B2] hover:text-black hover:bg-[#B5B6BB] hover:border-white cursor-pointer transition rounded grow text-center`}>
+                            <div onClick={() => {
+                                handleSetTokenAmount(amount)
+                                setFormData({ ...formData, amount: amount })
+                                }} key={index} className={`${tokenAmount === amount ? 'text-black bg-[#B5B6BB] border-white' : 'bg-[#46474E] border-[#B2B2B2]'} max-sm:text-[12px] p-2 bg-[#46474E] border border-[#B2B2B2] hover:text-black hover:bg-[#B5B6BB] hover:border-white cursor-pointer transition rounded grow text-center`}>
                                 { amountFormatter(amount) } {token?.currency}
                             </div>
                         )
@@ -171,10 +187,13 @@ export const DepositCard = () => {
                 />
             </div>
 
-            <Transactions transactions={transactions} />
+            <div>
+                <p className="mb-2 mt-10">Transaction History</p>
+                <Transactions transactions={transactions} />
+            </div>
 
             <button onClick={createTransaction} className="rounded bg-[#B5B6BB] h-[3rem] text-black w-full text-center mt-[5rem] hover:bg-white hover:text-black transition">
-                Connect wallet
+                Deposit
             </button>
         </div>
     )

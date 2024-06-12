@@ -31,7 +31,8 @@ export const WithdrawCard = () => {
 
     return(
         <div className="mt-6">
-            <section>
+            <p className="w-full text-center text-xl font-bold italic">Feature Coming Soon ...</p>
+            {/* <section>
                 <p className="mb-2">{token?.currency} to withdraw</p>
                 <div className=" justify-between flex gap-2 mb-4 flex-wrap">
 
@@ -121,7 +122,7 @@ export const WithdrawCard = () => {
 
             <button className="rounded bg-[#B5B6BB] h-[3rem] w-full text-black text-center mt-6 hover:bg-white hover:text-black transition">
                 Withdraw
-            </button>
+            </button> */}
         </div>
     )
 }

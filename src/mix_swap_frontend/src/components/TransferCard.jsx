@@ -26,7 +26,8 @@ export const TransferCard = () => {
 
     return(
         <div className="mt-6">
-            <section>
+            <p className="w-full text-center text-xl font-bold italic">Feature Coming Soon ...</p>
+            {/* <section>
                 <p className="mb-2">{token?.currency} to transfer</p>
                 <div className=" justify-between flex gap-2 mb-4 flex-wrap">
 
@@ -116,7 +117,7 @@ export const TransferCard = () => {
 
             <button className="rounded bg-[#B5B6BB] h-[3rem] w-full text-center text-black mt-6 hover:bg-white hover:text-black transition">
                 Transfer
-            </button>
+            </button> */}
         </div>
     )
 }

@@ -5,17 +5,6 @@ import {ChainContextProvider} from "./context/ChainContext.jsx";
 import {Dashboard} from "./pages/Dashboard.jsx";
 
 function App() {
-  // const [greeting, setGreeting] = useState('');
-  //
-  // function handleSubmit(event) {
-  //   event.preventDefault();
-  //   const name = event.target.elements.name.value;
-  //   mix_swap_backend.greet(name).then((greeting) => {
-  //     setGreeting(greeting);
-  //   });
-  //   return false;
-  // }
-
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleIsMenuOpen = () => {

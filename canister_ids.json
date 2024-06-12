@@ -1,0 +1,8 @@
+{
+  "mix_swap_backend": {
+    "ic": "p4urn-niaaa-aaaal-qjezq-cai"
+  },
+  "mix_swap_frontend": {
+    "ic": "pjtaa-maaaa-aaaal-qje2a-cai"
+  }
+}
