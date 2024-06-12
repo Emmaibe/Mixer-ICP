@@ -1,16 +1,12 @@
-import setting from "../assets/images/setting (1).png"
 import {useContext, useEffect, useState} from "react";
-import {AvmCoins} from "../utils/AvmCoins.js";
 import arrowHead from "../assets/images/arrow.png";
-// import { useWeb3Modal } from '@web3modal/wagmi/react'
 import {amountFormatter} from "../utils/amountFormatter.js";
 import {ChainContext} from "../context/ChainContext.jsx";
 import {formatPriceWithCommas} from "../utils/priceformater.js";
+import {Transactions} from "./Transactions.jsx";
 
 export const TransferCard = () => {
     const { chain, token, setToken } = useContext(ChainContext)
-
-    // const { open } = useWeb3Modal()
 
     const [coinToggle, setCoinToggle] = useState(false)
 
@@ -116,23 +112,7 @@ export const TransferCard = () => {
                 />
             </div>
 
-            <section className="rounded bg-[#46474E] w-full p-4 mt-10 flex flex-col gap-2 text-white">
-                <div className="flex justify-between items-center">
-                    <p>Transfer method</p>
-                    <div className="flex items-center gap-1">
-                        <img src={setting} alt={"setting icon"} className="w-[1.2rem]"/>
-                        <p>Relayer</p>
-                    </div>
-                </div>
-                <div className="flex justify-between items-center">
-                    <p>Relayer fee</p>
-                    <p>-</p>
-                </div>
-                <div className="flex justify-between items-center">
-                    <p>Total</p>
-                    <p>-</p>
-                </div>
-            </section>
+            <Transactions />
 
             <button className="rounded bg-[#B5B6BB] h-[3rem] w-full text-center text-black mt-6 hover:bg-white hover:text-black transition">
                 Transfer

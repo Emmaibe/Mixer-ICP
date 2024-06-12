@@ -6,6 +6,7 @@ import arrowHead from "../assets/images/arrow.png";
 import {amountFormatter} from "../utils/amountFormatter.js";
 import {ChainContext} from "../context/ChainContext.jsx";
 import {formatPriceWithCommas} from "../utils/priceformater.js";
+import {Transactions} from "./Transactions.jsx";
 
 export const WithdrawCard = () => {
     const { chain, token, setToken } = useContext(ChainContext)
@@ -116,27 +117,7 @@ export const WithdrawCard = () => {
                 />
             </div>
 
-            <section className="rounded bg-[#46474E] w-full p-4 mt-10 flex flex-col gap-2 text-white">
-                <div className="flex justify-between items-center">
-                    <p>Withdrawal method</p>
-                    <div className="flex items-center gap-1">
-                        <img src={setting} alt={"setting icon"} className="w-[1.2rem]"/>
-                        <p>Relayer</p>
-                    </div>
-                </div>
-                <div className="flex justify-between items-center">
-                    <p>Total fee</p>
-                    <p>-</p>
-                </div>
-                <div className="flex justify-between items-center">
-                    <p>To receive</p>
-                    <p>-</p>
-                </div>
-                <div className="flex justify-between items-center">
-                    <p>Total</p>
-                    <p>-</p>
-                </div>
-            </section>
+            <Transactions />
 
             <button className="rounded bg-[#B5B6BB] h-[3rem] w-full text-black text-center mt-6 hover:bg-white hover:text-black transition">
                 Withdraw

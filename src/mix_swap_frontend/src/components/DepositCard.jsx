@@ -1,18 +1,33 @@
 import arrowHead from "../assets/images/arrow.png"
 import {useContext, useEffect, useState} from "react";
-// import { useWeb3Modal } from '@web3modal/wagmi/react'
 import {ChainContext} from "../context/ChainContext.jsx";
 import {amountFormatter} from "../utils/amountFormatter.js";
 import {formatPriceWithCommas} from "../utils/priceformater.js";
+import {Transactions} from "./Transactions.jsx";
+import { mix_swap_backend } from 'declarations/mix_swap_backend';
 
 export const DepositCard = () => {
     const { chain, token, setToken } = useContext(ChainContext)
 
-    // const { open } = useWeb3Modal()
+    const now = new Date();
 
     const [coinToggle, setCoinToggle] = useState(false)
 
     const [tokenAmount, setTokenAmount] = useState('')
+
+    const [transactions, setTransactions] = useState([])
+
+    const [formData, setFormData] = useState({
+        chain: `${chain?.name}`,
+        name: `${token?.name}`,
+        currency: `${token?.currency}`,
+        address: '',
+        amount: tokenAmount,
+    })
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
 
     const handleSetTokenAmount = (amount) => {
         setTokenAmount(amount)
@@ -26,9 +41,57 @@ export const DepositCard = () => {
         setTokenAmount('')
     }, [chain, token]);
 
+
+    async function fetchData(){
+        const trans = await mix_swap_backend.readTransactions();
+        setTransactions(trans);
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, [transactions]);
+
+    function createTransaction(){
+        if (
+            !formData.name || !formData.amount ||
+            !formData.chain || !formData.currency ||
+            !formData.address
+        ) return alert("Please fill all required transaction fields");
+
+        let newTransaction = {
+            chain: formData.chain,
+            name: formData.name,
+            currency: formData.currency,
+            address: formData.address,
+            amount: formData.amount,
+            time: now.toString()
+        }
+
+        setTransactions(prevTransactions => {
+            mix_swap_backend.createTransaction(
+                newTransaction.chain,
+                newTransaction.name,
+                newTransaction.currency,
+                newTransaction.address,
+                newTransaction.amount,
+                newTransaction.time
+            )
+
+            return [newTransaction, ...prevTransactions];
+        });
+    }
+
+    function deleteTransaction(id){
+        mix_swap_backend.delete(id);
+        setTransactions(prevNotes => {
+            return prevNotes.filter((transactionItem, index) => {
+                return index !== id;
+            });
+        });
+    }
+
     return(
         <div className="mt-6">
-
             <section>
                 <p className="mb-2">{token?.currency} to deposit</p>
                 <div className=" justify-between flex gap-2 mb-4 flex-wrap">
@@ -100,12 +163,17 @@ export const DepositCard = () => {
             <div>
                 <p className="mb-2 mt-5">Recipient address</p>
                 <input
+                    name="address"
+                    value={formData.address}
+                    onChange={handleChange}
                     className="rounded bg-[#37383E] border-2 border-[#B5B6BB] h-[3rem] w-full px-4 focus:bg-white text-black"
                     placeholder="Place recipient address here"
                 />
             </div>
 
-            <button className="rounded bg-[#B5B6BB] h-[3rem] text-black w-full text-center mt-[5rem] hover:bg-white hover:text-black transition">
+            <Transactions transactions={transactions} />
+
+            <button onClick={createTransaction} className="rounded bg-[#B5B6BB] h-[3rem] text-black w-full text-center mt-[5rem] hover:bg-white hover:text-black transition">
                 Connect wallet
             </button>
         </div>
